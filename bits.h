@@ -5,6 +5,8 @@
 #include<stddef.h>
 #define BYTE_SIZE 8
 #define BYTE_END 2
+#define BYTE_INVALID 0xff
+#define ARR_SIZE(x) ((sizeof x) / (sizeof *x))
 
 typedef struct
 {

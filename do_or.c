@@ -1,3 +1,4 @@
+#include<stdio.h>
 #ifdef OMP
 #include<omp.h>
 #endif
@@ -36,11 +37,24 @@ uint8_t do_or_array(byte_array_t* array)
     size_t count;
     uint8_t ret = 0;
     byte_t* byte = NULL;
-    for(count = 0; count < nz; count++)
+#ifdef OMP
+    int tid;
+#pragma omp parallel \
+    shared(array, nz) \
+    private(count, byte, tid, ret)
     {
-        byte = byte_array_get(array, count);
-        ret |= do_or_single(byte);
+#pragma omp parallel for \
+        schedule(static, 16) \
+        reduction(|:ret)
+        for(count = 0; count < nz; count++)
+        {
+            byte = byte_array_get(array, count);
+            ret |= do_or_single(byte);
+        }
+        tid = omp_get_thread_num();
+        fprintf(stdout, "Thread id %d and value %u\n", tid, ret);
     }
+#endif
     return ret;
 
 }

@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     byte_t* byte = byte_alloc(0);
     //uint8_t bytes[] = {1,2,3,4,5,6,3,8,9,0,20,34,32,12,4,5};
     uint8_t bytes[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1};
+        0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     size_t nz = ARR_SIZE(bytes);
     byte_array_t* b_ar = byte_array_create(bytes, nz);
     fprintf(stdout, "BYTE ARRAY SIZE : %zu\n", get_array_size(b_ar));

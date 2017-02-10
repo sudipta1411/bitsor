@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -I.
-DFLAGS = -DOMP
+DFLAGS = -DOMP -DNUM=1024*128 -DNUM_THREAD=16
 FFLAGS = -fopenmp
 INCLUDE = bits.h do_or.h
 OBJ = bits.o main.o do_or.o

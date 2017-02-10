@@ -37,16 +37,17 @@ uint8_t do_or_array(byte_array_t* array)
     size_t count;
     uint8_t ret = 0, local_ret;
     byte_t* byte;
+    size_t chunk_size = nz / NUM_THREAD;
 #ifdef OMP
     int tid;
 #pragma omp parallel \
-    shared(array, nz, ret) \
+    shared(array, nz, ret, chunk_size) \
     private(count, byte, tid, local_ret)
     {
         local_ret = 0;
         byte = NULL;
 #pragma omp for \
-        schedule(static, 16)
+        schedule(static, chunk_size)
         for(count = 0; count < nz; count++)
         {
             byte = byte_array_get(array, count);

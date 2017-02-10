@@ -35,24 +35,28 @@ uint8_t do_or_array(byte_array_t* array)
         return 0;
     size_t nz = get_array_size(array);
     size_t count;
-    uint8_t ret = 0;
-    byte_t* byte = NULL;
+    uint8_t ret = 0, local_ret;
+    byte_t* byte;
 #ifdef OMP
     int tid;
 #pragma omp parallel \
-    shared(array, nz) \
-    private(count, byte, tid, ret)
+    shared(array, nz, ret) \
+    private(count, byte, tid, local_ret)
     {
-#pragma omp parallel for \
-        schedule(static, 16) \
-        reduction(|:ret)
+        local_ret = 0;
+        byte = NULL;
+#pragma omp for \
+        schedule(static, 16)
         for(count = 0; count < nz; count++)
         {
             byte = byte_array_get(array, count);
-            ret |= do_or_single(byte);
+            local_ret |= do_or_single(byte);
         }
+#pragma omp critical
+        ret |= local_ret;
+
         tid = omp_get_thread_num();
-        fprintf(stdout, "Thread id %d and value %u\n", tid, ret);
+        fprintf(stdout, "Thread id %d and value %u\n", tid, local_ret);
     }
 #endif
     return ret;

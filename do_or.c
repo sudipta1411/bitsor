@@ -16,6 +16,7 @@ uint8_t do_or_single(byte_t* byte)
         if(ret == 1)
             break;
     }
+    byte->n = 0;
     return ret;
 }
 

@@ -110,7 +110,7 @@ void byte_array_free(byte_array_t** array)
 {
     if(array && *array)
     {
-        int i;
+        size_t i;
         for(i=0; i<(*array)->nz; i++)
         {
             byte_free((*array)->ar+i);

@@ -78,7 +78,7 @@ uint8_t do_or_tree(byte_array_t* array)
     {
         iter = nz / pow(2, h);
 #pragma omp parallel \
-        shared(array, aux, iter) \
+        shared(array, aux, chunk_size) \
         private(i, tid, byte1, byte2, ret)
         {
             tid = omp_get_thread_num();
@@ -88,11 +88,12 @@ uint8_t do_or_tree(byte_array_t* array)
             {
                 byte1 = byte_array_get(array, 2*i);
                 byte2 = byte_array_get(array, 2*i+1);
-                ret = do_or_pair(byte1, byte2);
-                fprintf(stdout, "[%d] %u %u %u\n", tid, get_byte(byte1), get_byte(byte2), ret);
+                ret = /*get_byte(byte1) + get_byte(byte2);*/do_or_pair(byte1, byte2);
+                //fprintf(stdout, "[%d] %u %u %u\n", tid, get_byte(byte1), get_byte(byte2), ret);
                 byte_array_set(aux, i, ret);
             }
-#pragma omp for
+#pragma omp for \
+            schedule(static, chunk_size)
             for(i=0; i<iter; i++)
             {
                 byte_t *byte = byte_array_get(aux, i);
@@ -101,7 +102,7 @@ uint8_t do_or_tree(byte_array_t* array)
         }
     }
     byte_array_free(&aux);
-    fprintf(stdout, "result : %u\n", get_byte(byte_array_get(array, 0)));
+    //fprintf(stdout, "result : %u\n", get_byte(byte_array_get(array, 0)));
     return get_byte(byte_array_get(array, 0));
 }
 

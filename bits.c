@@ -37,7 +37,7 @@ void byte_free(byte_t** byte)
 
 uint8_t get_byte(byte_t* byte)
 {
-    return byte->n;
+    return byte->b;
 }
 
 void set_byte(byte_t* byte, uint8_t b)

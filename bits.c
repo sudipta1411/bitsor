@@ -115,6 +115,7 @@ void byte_array_free(byte_array_t** array)
         {
             byte_free((*array)->ar+i);
         }
+        free(*array);
     }
     *array = NULL;
 }

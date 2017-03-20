@@ -56,7 +56,7 @@ uint8_t do_or_array(byte_array_t* array)
         ret |= local_ret;
 
         tid = omp_get_thread_num();
-        fprintf(stdout, "Thread id %d and value %u\n", tid, local_ret);
+        //fprintf(stdout, "Thread id %d and value %u\n", tid, local_ret);
     }
     return ret;
 }
